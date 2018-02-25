@@ -1,0 +1,25 @@
+{
+  "name": "shoppy/shoppy-php",
+  "description": "Shoppy PHP Library",
+  "keywords": [
+    "shoppy",
+    "payment processing",
+    "api"
+  ],
+  "homepage": "https://shoppy.gg",
+  "license": "MIT",
+  "require": {
+    "php": ">=5.4.0",
+    "ext-curl": "*",
+    "ext-json": "*",
+    "ext-mbstring": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~6.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Shoppy\\": "lib/"
+    }
+  }
+}
