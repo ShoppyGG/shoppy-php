@@ -5,7 +5,7 @@ namespace Shoppy\Models;
 use Shoppy\ApiOperations\All;
 use Shoppy\ApiOperations\Retrieve;
 
-class Order extends ApiResource
+class Ticket extends ApiResource
 {
     use Retrieve;
     use All;

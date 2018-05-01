@@ -27,6 +27,10 @@ class ShoppyObject implements \Countable
      */
     public function count()
     {
-        // TODO: Implement count() method.
+        return $this->apiResponse->headers{'x-total-pages'} ?? 1;
+    }
+
+    public function toArray($recursive = false) {
+        return (array) $this->apiResponse->json;
     }
 }

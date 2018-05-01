@@ -8,24 +8,21 @@ abstract class ApiResource extends ShoppyObject
 {
     private $_httpClient;
 
-    public function __construct($id)
+    public function __construct($id = NULL)
     {
         parent::__construct($id);
         $this->_httpClient = new CurlClient();
     }
 
-    public function refresh()
+    public function refresh($opts = [])
     {
-        $response = $this->_httpClient->request('get', $this->instanceUrl());
-
-        foreach($response->json as $key => $value) {
-            $this->{$key} = $value;
-        }
+        $response = $this->_httpClient->request('get', $this->instanceUrl($opts));
+        $this->apiResponse = $response;
 
         return $this;
     }
 
-    public function instanceUrl()
+    public function instanceUrl($opts)
     {
         $base = get_called_class();
         $class = substr($base, strrpos($base, '\\'));
@@ -33,8 +30,23 @@ abstract class ApiResource extends ShoppyObject
         $class = str_replace('\\', '', $class);
         $class = strtolower($class);
 
-        $resourceId = $this->getId();
+        $resourceId = '';
 
-        return "/1.0/${class}s/${resourceId}";
+        if ($this->getId()) {
+            $resourceId = '/' . $this->getId();
+        }
+
+        $uri = "/1.0/${class}s${resourceId}";
+
+        if(isset($opts['page'])) {
+            $uri .= "?page=${opts['page']}";
+        }
+
+        return $uri;
+    }
+
+    public function __get($key)
+    {
+        return $this->apiResponse->json->$key;
     }
 }

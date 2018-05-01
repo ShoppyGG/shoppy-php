@@ -9,8 +9,8 @@ class CurlClient
 {
     private static $instance;
 
-    const DEFAULT_TIMEOUT = 80 * 1000;
-    const DEFAULT_CONNECT_TIMEOUT = 30 * 1000;
+    const DEFAULT_TIMEOUT = 80000; // 80 * 1000
+    const DEFAULT_CONNECT_TIMEOUT = 30000; // 30 * 1000
 
     private $timeout = self::DEFAULT_TIMEOUT;
     private $connectTimeout = self::DEFAULT_CONNECT_TIMEOUT;
@@ -44,11 +44,13 @@ class CurlClient
 
         $opts[CURLOPT_URL] = $url;
         $opts[CURLOPT_HTTPHEADER] = [
-            'Authorization: ' . Shoppy::getApiKey()
+            'Authorization: ' . Shoppy::getApiKey(),
         ];
+        $opts[CURLOPT_USERAGENT] = 'shoppy-php @ ' . phpversion();
         $opts[CURLOPT_RETURNTRANSFER] = true;
         $opts[CURLOPT_CONNECTTIMEOUT] = $this->connectTimeout;
         $opts[CURLOPT_TIMEOUT] = $this->timeout;
+        $opts[CURLOPT_HEADER] = true;
 
         curl_setopt_array($ch, $opts);
 
@@ -59,7 +61,27 @@ class CurlClient
         }
 
         $rcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $apiResponse = new ApiResponse($data, $rcode, [], json_decode($data));
+        $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+
+        $header = substr($data, 0, $headerSize);
+        $body = substr($data, $headerSize);
+
+        // Format header
+        $headers = [];
+        foreach(explode(PHP_EOL, $header) as $i => $line) {
+            if($i === 0) {
+                $headers['http_code'] = $line;
+                continue;
+            }
+
+            $exploded = explode(': ', $line);
+
+            if (count($exploded) === 2) {
+                $headers[strtolower($exploded[0])] = $exploded[1];
+            }
+        }
+
+        $apiResponse = new ApiResponse($body, $rcode, $headers, json_decode($body));
 
         return $apiResponse;
     }
