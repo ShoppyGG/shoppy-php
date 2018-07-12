@@ -24,7 +24,7 @@ class Shoppy
      */
     public static $apiVersion = NULL;
 
-    const VERSION = "1.0";
+    const VERSION = "1";
 
     /**
      * Get The API key used for requests.
