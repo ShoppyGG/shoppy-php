@@ -36,7 +36,7 @@ abstract class ApiResource extends ShoppyObject
             $resourceId = '/' . $this->getId();
         }
 
-        $uri = "/1.0/${class}s${resourceId}";
+        $uri = "/v1/${class}s${resourceId}";
 
         if(isset($opts['page'])) {
             $uri .= "?page=${opts['page']}";
