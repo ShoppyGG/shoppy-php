@@ -2,7 +2,7 @@
 
 namespace Shoppy\ApiOperations;
 
-trait Create
+trait Update
 {
 
 }

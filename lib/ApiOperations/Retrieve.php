@@ -8,6 +8,7 @@ trait Retrieve
     {
         $instance = new static($id);
         $instance->refresh();
+
         return $instance;
     }
 }

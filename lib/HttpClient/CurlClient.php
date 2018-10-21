@@ -68,8 +68,8 @@ class CurlClient
 
         // Format header
         $headers = [];
-        foreach(explode(PHP_EOL, $header) as $i => $line) {
-            if($i === 0) {
+        foreach (explode(PHP_EOL, $header) as $i => $line) {
+            if ($i === 0) {
                 $headers['http_code'] = $line;
                 continue;
             }

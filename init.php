@@ -10,4 +10,9 @@ require(dirname(__FILE__) . '/lib/ApiOperations/Retrieve.php');
 // Shoppy Models
 require(dirname(__FILE__) . '/lib/Models/ApiResource.php');
 require(dirname(__FILE__) . '/lib/Models/Order.php');
+require(dirname(__FILE__) . '/lib/Models/Coupon.php');
+require(dirname(__FILE__) . '/lib/Models/Feedback.php');
+require(dirname(__FILE__) . '/lib/Models/Product.php');
+require(dirname(__FILE__) . '/lib/Models/Ticket.php');
+require(dirname(__FILE__) . '/lib/Models/Webhook.php');
 require(dirname(__FILE__) . '/lib/Models/ShoppyObject.php');

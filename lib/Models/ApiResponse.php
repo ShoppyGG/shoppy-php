@@ -30,7 +30,7 @@ class ApiResponse
         $this->headers = $headers;
         $this->json = $json;
 
-        if(isset($json->error) && !$json->status) {
+        if (isset($json->error) && !$json->status) {
             throw new ApiException($json->error->message, $json->error->code);
         }
     }
