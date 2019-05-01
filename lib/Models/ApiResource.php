@@ -22,6 +22,27 @@ abstract class ApiResource extends ShoppyObject
         return $this;
     }
 
+    public function _create($params, $opts = [])
+    {
+        $response = $this->_httpClient->request('put', $this->classUrl($opts), $params);
+        $this->apiResponse = $response;
+
+        return $this;
+    }
+
+    public function classUrl($opts)
+    {
+        $base = get_called_class();
+        $class = substr($base, strrpos($base, '\\'));
+
+        $class = str_replace('\\', '', $class);
+        $class = strtolower($class);
+
+        $uri = "/v1/${class}s";
+
+        return $uri;
+    }
+
     public function instanceUrl($opts)
     {
         $base = get_called_class();

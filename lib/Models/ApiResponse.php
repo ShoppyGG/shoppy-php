@@ -3,6 +3,8 @@
 namespace Shoppy\Models;
 
 use Shoppy\Errors\ApiException;
+use Shoppy\Errors\RatelimitationException;
+use Shoppy\Errors\ValidationException;
 
 /**
  * Class ApiResponse
@@ -22,6 +24,8 @@ class ApiResponse
      * @param $headers
      * @param $json
      * @throws ApiException
+     * @throws ValidationException
+     * @throws RatelimitationException
      */
     public function __construct($body, $code, $headers, $json)
     {
@@ -32,6 +36,14 @@ class ApiResponse
 
         if (isset($json->error) && !$json->status) {
             throw new ApiException($json->error->message, $json->error->code);
+        }
+
+        if (isset($json->errors)) {
+            throw new ValidationException((array)$json->errors);
+        }
+
+        if (isset($this->code) && $this->code === 429) {
+            throw new RatelimitationException();
         }
     }
 }

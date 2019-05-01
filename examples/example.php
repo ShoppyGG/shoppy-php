@@ -2,7 +2,7 @@
 
 require('../vendor/autoload.php');
 
-\Shoppy\Shoppy::setApiKey('KY56tdDqEfuyZPoTgNjcWcXBDcdLy5Wzpsws9O1Bh03Ch2IQze');
+\Shoppy\Shoppy::setApiKey('6AX9cPuUZN5PzUjG0caUkdv3yYrd0GCScrBcwzgjQTOGAkAQqx');
 
 /**
  * Example to fetch a single ApiResource
@@ -25,4 +25,36 @@ for ($i = 1; $i < $pages; $i++) {
     foreach ($orders->toArray() as $order) {
         echo $order->id . PHP_EOL;
     }
+}
+
+/**
+ * Example to create a product
+ */
+
+try {
+    $product = \Shoppy\Models\Product::create([
+        'title'         => 'My test product',
+        'price'         => 10,
+        'unlisted'      => false,
+        'type'          => 'service',
+        'currency'      => 'EUR',
+        'stock_warning' => 0,
+        'quantity'      => [
+            'min' => 1,
+            'max' => 10
+        ],
+        'email'         => [
+            'enabled' => false
+        ]
+    ]);
+
+} catch (\Shoppy\Errors\ValidationException $exception) {
+    printf("ValidationException \r\n");
+
+    foreach ($exception->errors as $fieldName => $description) {
+        printf("${fieldName}: %s \r\n", join($description, ','));
+    }
+
+} catch (\Shoppy\Errors\RatelimitationException $exception) {
+    print 'You are being rate limited';
 }

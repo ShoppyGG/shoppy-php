@@ -24,6 +24,13 @@ class CurlClient
         return self::$instance;
     }
 
+    /**
+     * @param $method
+     * @param $url
+     * @param array $params
+     * @return ApiResponse
+     * @throws \Shoppy\Errors\ApiException
+     */
     public function request($method, $url, $params = [])
     {
         $ch = curl_init();
@@ -36,7 +43,11 @@ class CurlClient
                 break;
             case 'post':
                 $opts[CURLOPT_POST] = true;
-                $opts[CURLOPT_POSTFIELDS] = urlencode($params);
+                $opts[CURLOPT_POSTFIELDS] = json_encode($params);
+                break;
+            case 'put':
+                $opts[CURLOPT_CUSTOMREQUEST] = 'PUT';
+                $opts[CURLOPT_POSTFIELDS] = json_encode($params);
                 break;
         }
 
@@ -45,6 +56,8 @@ class CurlClient
         $opts[CURLOPT_URL] = $url;
         $opts[CURLOPT_HTTPHEADER] = [
             'Authorization: ' . Shoppy::getApiKey(),
+            'Accept: application/json',
+            'Content-Type: application/json'
         ];
         $opts[CURLOPT_USERAGENT] = 'shoppy-php @ ' . phpversion();
         $opts[CURLOPT_RETURNTRANSFER] = true;
