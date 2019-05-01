@@ -4,12 +4,14 @@
   "keywords": [
     "shoppy",
     "payment processing",
-    "api"
+    "api",
+    "bitcoin",
+    "ethereum"
   ],
   "homepage": "https://shoppy.gg",
   "license": "MIT",
   "require": {
-    "php": ">=5.4.0",
+    "php": ">=7.0.0",
     "ext-curl": "*",
     "ext-json": "*",
     "ext-mbstring": "*"
