@@ -27,13 +27,11 @@ class ShoppyObject implements \Countable
      */
     public function count()
     {
-        var_dump($this->apiResponse->headers);
-
         if (!isset($this->apiResponse->headers['x-total-pages'])) {
             return intdiv((int)$this->apiResponse->headers{'x-total-items'}, (int)$this->apiResponse->headers{'x-items-per-page'});
         }
 
-        return $this->apiResponse->headers{'x-total-pages'} ?? 1;
+        return intval($this->apiResponse->headers{'x-total-pages'}) ?? 1;
     }
 
     public function toArray($recursive = false)

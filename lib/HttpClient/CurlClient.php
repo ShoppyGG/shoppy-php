@@ -30,6 +30,8 @@ class CurlClient
      * @param array $params
      * @return ApiResponse
      * @throws \Shoppy\Errors\ApiException
+     * @throws \Shoppy\Errors\RatelimitationException
+     * @throws \Shoppy\Errors\ValidationException
      */
     public function request($method, $url, $params = [])
     {

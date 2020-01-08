@@ -58,3 +58,13 @@ try {
 } catch (\Shoppy\Errors\RatelimitationException $exception) {
     print 'You are being rate limited';
 }
+
+/**
+ * Example to update a product
+ */
+
+$product = \Shoppy\Models\Product::retrieve('8YTgmEz');
+
+$product->update([
+    'title' => 'hello world'
+]);
