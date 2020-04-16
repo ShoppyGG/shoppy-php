@@ -68,3 +68,10 @@ $product = \Shoppy\Models\Product::retrieve('8YTgmEz');
 $product->update([
     'title' => 'hello world'
 ]);
+
+/**
+ * Example to fetch a query and reply to it
+ */
+
+$query = \Shoppy\Models\Query::retrieve('sJuZQpx');
+$query->reply("Example message");

@@ -6,7 +6,7 @@ use Shoppy\HttpClient\CurlClient;
 
 abstract class ApiResource extends ShoppyObject
 {
-    private $_httpClient;
+    public $_httpClient;
 
     public function __construct($id = NULL)
     {
@@ -50,7 +50,7 @@ abstract class ApiResource extends ShoppyObject
         return $uri;
     }
 
-    public function instanceUrl($opts)
+    public function instanceUrl($opts, $action = null)
     {
         $base = get_called_class();
         $class = substr($base, strrpos($base, '\\'));
@@ -64,7 +64,24 @@ abstract class ApiResource extends ShoppyObject
             $resourceId = '/' . $this->getId();
         }
 
-        $uri = "/v1/${class}s${resourceId}";
+        // fix inconsistency naming in API v1
+        {
+            if ($class === 'query' && !$action) {
+                $class = 'querie';
+            }
+
+            $pluralSign = "s";
+
+            if ($class === 'query' && $action) {
+                $pluralSign = null;
+            }
+        }
+
+        $uri = "/v1/${class}{$pluralSign}${resourceId}";
+
+        if ($action) {
+            $uri .= "/" . strtolower($action);
+        }
 
         if (isset($opts['page'])) {
             $uri .= "?page=${opts['page']}";
